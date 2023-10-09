@@ -9,14 +9,14 @@ namespace UserTask.Models
         [Key]
         [Required]
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Name is required")]
         public string? Name { get; set; }
-        [Required]
-
+        [Required(ErrorMessage = "Age is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "Age must be a positive number")]
         public int? Age { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public string? Email { get; set; }
 
         [Required]

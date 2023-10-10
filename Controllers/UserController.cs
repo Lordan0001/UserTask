@@ -12,12 +12,20 @@ using UserTask.Models;
 
 namespace UserTask.Controllers
 {
+    /// <summary>
+    /// Controller for user CRUD add give/remove them roles
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    
     public class UserController : ControllerBase
     {
         private readonly MainContext _context;
         private const int DEFAULTUSERROLE = 4;//user role id
+        /// <summary>
+        /// init main context for db data
+        /// </summary>
+        /// <param name="context"></param>
 
         public UserController(MainContext context)
         {
@@ -25,6 +33,10 @@ namespace UserTask.Controllers
         }
 
         // GET
+        /// <summary>
+        /// Get list of all roles
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("UserRoles")]
         public async Task<ActionResult<IEnumerable<UserRole>>> GetUserRoles()
         {
@@ -34,6 +46,15 @@ namespace UserTask.Controllers
             }
             return await _context.UserRoles.ToListAsync();
         }
+        /// <summary>
+        /// Get list of roles using pagination
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="sortField"></param>
+        /// <param name="sortOrder"></param>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         [HttpGet("Role")]
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles(
                   [FromQuery] int? page = 1,
@@ -85,7 +106,15 @@ namespace UserTask.Controllers
             return Ok(result);
         }
 
-      
+      /// <summary>
+      /// Get list of users using pagination
+      /// </summary>
+      /// <param name="page"></param>
+      /// <param name="pageSize"></param>
+      /// <param name="sortField"></param>
+      /// <param name="sortOrder"></param>
+      /// <param name="filter"></param>
+      /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers(
             [FromQuery] int? page = 1,          
@@ -146,7 +175,11 @@ namespace UserTask.Controllers
             return Ok(result);
         }
 
-       
+       /// <summary>
+       /// Get user info with role using user id
+       /// </summary>
+       /// <param name="id"></param>
+       /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetUserWithRoles(int id)
         {
@@ -182,6 +215,11 @@ namespace UserTask.Controllers
 
 
         // Post
+        /// <summary>
+        /// Create user 
+        /// </summary>
+        /// <param name="createUser"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(DTOUser createUser)
         {
@@ -222,7 +260,11 @@ namespace UserTask.Controllers
             await _context.SaveChangesAsync();
             return user;
         }
-
+        /// <summary>
+        /// Give a role to user
+        /// </summary>
+        /// <param name="userRole"></param>
+        /// <returns></returns>
         [HttpPost("Role")]
         public async Task<ActionResult<UserRole>> PostUserRole(UserRole userRole)
         {
@@ -238,6 +280,12 @@ namespace UserTask.Controllers
         }
 
         // Put
+        /// <summary>
+        /// Update user info 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="updatedUser"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, DTOUser updatedUser)
         {
@@ -281,6 +329,11 @@ namespace UserTask.Controllers
 
 
         // Delete
+        /// <summary>
+        /// Delete User
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -300,7 +353,11 @@ namespace UserTask.Controllers
             return Ok("user with id: " +id + " was deleted!");
         }
 
+        /// <summary>
+        /// Delete record UserRoles by id (if need to remove role from user)
+        /// </summary>
         [HttpDelete("UserRoles/{id}")]
+
         public async Task<IActionResult> DeleteUserRole(int id)
         {
             if (_context.UserRoles == null)

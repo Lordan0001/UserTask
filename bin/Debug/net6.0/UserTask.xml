@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UserTask</name>
+    </assembly>
+    <members>
+        <member name="T:UserTask.Controllers.UserController">
+            <summary>
+            Controller for user CRUD add give/remove them roles
+            </summary>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.#ctor(UserTask.Context.MainContext)">
+            <summary>
+            init main context for db data
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.GetUserRoles">
+            <summary>
+            Get list of all roles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.GetRoles(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
+            <summary>
+            Get list of roles using pagination
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="sortField"></param>
+            <param name="sortOrder"></param>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.GetUsers(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
+            <summary>
+            Get list of users using pagination
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="sortField"></param>
+            <param name="sortOrder"></param>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.GetUserWithRoles(System.Int32)">
+            <summary>
+            Get user info with role using user id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.PostUser(UserTask.ControllerModels.DTOUser)">
+            <summary>
+            Create user 
+            </summary>
+            <param name="createUser"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.PostUserRole(UserTask.Models.UserRole)">
+            <summary>
+            Give a role to user
+            </summary>
+            <param name="userRole"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.PutUser(System.Int32,UserTask.ControllerModels.DTOUser)">
+            <summary>
+            Update user info 
+            </summary>
+            <param name="id"></param>
+            <param name="updatedUser"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.DeleteUser(System.Int32)">
+            <summary>
+            Delete User
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UserTask.Controllers.UserController.DeleteUserRole(System.Int32)">
+            <summary>
+            Delete record UserRoles by id (if need to remove role from user)
+            </summary>
+        </member>
+        <member name="T:UserTask.Migrations.Createdb">
+            <inheritdoc />
+        </member>
+        <member name="M:UserTask.Migrations.Createdb.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:UserTask.Migrations.Createdb.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:UserTask.Migrations.Createdb.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:UserTask.Migrations.checkconstraints">
+            <inheritdoc />
+        </member>
+        <member name="M:UserTask.Migrations.checkconstraints.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:UserTask.Migrations.checkconstraints.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:UserTask.Migrations.checkconstraints.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:UserTask.Models.User">
+            <summary>
+            Represents a user entity.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.User.Id">
+            <summary>
+            Gets or sets the unique identifier for the user.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.User.Name">
+            <summary>
+            Gets or sets the name of the user.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.User.Age">
+            <summary>
+            Gets or sets the age of the user.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.User.Email">
+            <summary>
+            Gets or sets the email address of the user.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.User.UserRoles">
+            <summary>
+            Gets or sets the collection of user roles associated with the user.
+            </summary>
+        </member>
+    </members>
+</doc>

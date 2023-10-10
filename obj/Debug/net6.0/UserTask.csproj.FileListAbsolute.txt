@@ -294,3 +294,15 @@ D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\runtimes\win-x64\native\e_s
 D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\runtimes\win-x86\native\e_sqlite3.dll
 D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\UserTask.xml
 D:\Projects\.NET\Interview\UserTask\obj\Debug\net6.0\UserTask.xml
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Serilog.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Serilog.Extensions.Logging.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Serilog.Sinks.File.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Binder.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Microsoft.Extensions.Hosting.Abstractions.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Serilog.AspNetCore.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Serilog.Extensions.Hosting.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Serilog.Formatting.Compact.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Serilog.Settings.Configuration.dll
+D:\Projects\.NET\Interview\UserTask\bin\Debug\net6.0\Serilog.Sinks.Debug.dll

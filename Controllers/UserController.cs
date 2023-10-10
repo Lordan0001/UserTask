@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using UserTask.Context;
 using UserTask.ControllerModels;
 using UserTask.Models;
@@ -44,23 +45,23 @@ namespace UserTask.Controllers
             {
                 return NotFound();
             }
+            Log.Information("UserController get user role => {@Userroles}", await _context.UserRoles.ToListAsync());
             return await _context.UserRoles.ToListAsync();
         }
         /// <summary>
-        /// Get list of roles using pagination
+        /// Get a list of roles with pagination support.
         /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="sortField"></param>
-        /// <param name="sortOrder"></param>
-        /// <param name="filter"></param>
-        /// <returns></returns>
+        /// <param name="page">Page number (default is 1).</param>
+        /// <param name="pageSize">Number of items per page (default is 100).</param>
+        /// <param name="sortField">Field to sort by  (Id or Name).</param>
+        /// <param name="sortOrder">Sorting order (asc or desc).</param>
+        /// <param name="filter">Filter users by keyword.</param>
         [HttpGet("Role")]
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles(
                   [FromQuery] int? page = 1,
                   [FromQuery] int? pageSize = 100,
-                  [FromQuery, Required] string? sortField = "Id or Name",
-                  [FromQuery] string? sortOrder = "asc or desc",
+                  [FromQuery, Required] string? sortField = "Id",
+                  [FromQuery] string? sortOrder = "asc",
                   [FromQuery] string? filter = null)
         {
             if (_context.Roles == null)
@@ -102,26 +103,28 @@ namespace UserTask.Controllers
                 PageSize = pageSize.GetValueOrDefault(),
                 Items = items
             };
+            Log.Information("UserController: Retrieving roles with pagination. Total roles found: {TotalRoles}, Page: {Page}, PageSize: {PageSize}", totalItems, currentPage, pageSize);
+
 
             return Ok(result);
         }
 
-      /// <summary>
-      /// Get list of users using pagination
-      /// </summary>
-      /// <param name="page"></param>
-      /// <param name="pageSize"></param>
-      /// <param name="sortField"></param>
-      /// <param name="sortOrder"></param>
-      /// <param name="filter"></param>
-      /// <returns></returns>
+        /// <summary>
+        /// Get a list of users with pagination support.
+        /// </summary>
+        /// <param name="page">Page number (default is 1).</param>
+        /// <param name="pageSize">Number of items per page (default is 100).</param>
+        /// <param name="sortField">Field to sort by (e.g., "Id", "Name", "Age", "Email").</param>
+        /// <param name="sortOrder">Sorting order ("asc" or "desc").</param>
+        /// <param name="filter">Filter users by keyword.</param>
+        /// <returns>A list of users with pagination details.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers(
-            [FromQuery] int? page = 1,          
-            [FromQuery] int? pageSize = 100,    
-            [FromQuery,Required] string? sortField = "Id, Name, Age or Email", 
-            [FromQuery] string? sortOrder = "asc or desc", 
-            [FromQuery] string? filter = null) 
+            [FromQuery, Range(1, int.MaxValue)] int page = 1,
+            [FromQuery, Range(1, int.MaxValue)] int pageSize = 100,
+            [FromQuery] string sortField = "Id",
+            [FromQuery] string sortOrder = "asc",
+            [FromQuery] string? filter = null)
         {
             if (_context.Users == null)
             {
@@ -130,8 +133,9 @@ namespace UserTask.Controllers
 
             var query = _context.Users.AsQueryable();
 
-            if (!string.IsNullOrEmpty(filter) && int.TryParse(filter, out var ageFilter))//Filter
+            if (!string.IsNullOrEmpty(filter) && int.TryParse(filter, out var ageFilter))
             {
+                // Filter by keyword or age if a valid number is provided
                 query = query.Where(user =>
                     user.Name.Contains(filter) ||
                     user.Email.Contains(filter) ||
@@ -139,28 +143,27 @@ namespace UserTask.Controllers
             }
             else if (!string.IsNullOrEmpty(filter))
             {
+                // Filter by keyword only
                 query = query.Where(user =>
                     user.Name.Contains(filter) ||
                     user.Email.Contains(filter));
             }
 
-        //Sort
             if (!string.IsNullOrEmpty(sortField))
             {
-                
+                // Sort by the specified field and order
                 query = sortOrder.ToLower() == "desc" ?
                     query.OrderByDescending(user => EF.Property<int>(user, sortField)) :
                     query.OrderBy(user => EF.Property<int>(user, sortField));
             }
 
-
-            //Pagination
             var totalItems = await query.CountAsync();
-            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize.GetValueOrDefault());
-            var currentPage = page.GetValueOrDefault();
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            var currentPage = page;
+
             var items = await query
-                .Skip((currentPage - 1) * pageSize.GetValueOrDefault())
-                .Take(pageSize.GetValueOrDefault())
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
             var result = new
@@ -168,18 +171,20 @@ namespace UserTask.Controllers
                 TotalItems = totalItems,
                 TotalPages = totalPages,
                 CurrentPage = currentPage,
-                PageSize = pageSize.GetValueOrDefault(),
+                PageSize = pageSize,
                 Items = items
             };
+            Log.Information("UserController: Retrieving users with pagination. Total roles found: {TotalRoles}, Page: {Page}, PageSize: {PageSize}", totalItems, currentPage, pageSize);
+
 
             return Ok(result);
         }
 
-       /// <summary>
-       /// Get user info with role using user id
-       /// </summary>
-       /// <param name="id"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// Get user info with role using user id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetUserWithRoles(int id)
         {
@@ -209,6 +214,8 @@ namespace UserTask.Controllers
                 User = user,
                 Roles = roles
             };
+            Log.Information("UserController: get user with rols => {@userWithRoles}", userWithRoles);
+
 
             return userWithRoles;
         }
@@ -216,67 +223,96 @@ namespace UserTask.Controllers
 
         // Post
         /// <summary>
-        /// Create user 
+        /// Create a user 
         /// </summary>
         /// <param name="createUser"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(DTOUser createUser)
         {
-
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                if (_context.Users == null)
+                {
+                    return Problem("Entity set 'MainContext.Users' is null.");
+                }
+
+                if (_context.Users.Any(u => u.Email == createUser.email))
+                {
+                    ModelState.AddModelError("email", "Email is already in use.");
+                    return BadRequest(ModelState);
+                }
+
+                var user = new User
+                {
+                    Name = createUser.name,
+                    Age = createUser.age,
+                    Email = createUser.email
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                var userRole = new UserRole
+                {
+                    UserId = user.Id,
+                    RoleId = DEFAULTUSERROLE
+                };
+                _context.UserRoles.Add(userRole);
+
+                await _context.SaveChangesAsync();
+
+                Log.Information("UserController: add user => {@user}", user);
+
+                return user;
             }
-
-            if (_context.Users == null)
+            catch (DbUpdateException ex)
             {
-                return Problem("Entity set 'MainContext.Users'  is null.");
+                // Handle database update error
+                Log.Error(ex, "Error while creating user.");
+                return StatusCode(500, "An error occurred while creating the user.");
             }
-
-            if (_context.Users.Any(u => u.Email == createUser.email))
-            {
-                ModelState.AddModelError("email", "Email is already in use.");
-                return BadRequest(ModelState);
-            }
-
-            var user = new User
-            {
-                Name = createUser.name,
-                Age = createUser.age,
-                Email = createUser.email
-            };
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            var userRole = new UserRole
-            {
-                UserId = user.Id,
-                RoleId = DEFAULTUSERROLE
-            };
-            _context.UserRoles.Add(userRole);
-
-            await _context.SaveChangesAsync();
-            return user;
         }
+
         /// <summary>
         /// Give a role to user
         /// </summary>
-        /// <param name="userRole"></param>
+        /// <param name="dtoUserRole"></param>
         /// <returns></returns>
         [HttpPost("Role")]
-        public async Task<ActionResult<UserRole>> PostUserRole(UserRole userRole)
+        public async Task<ActionResult<UserRole>> PostUserRole(DTOUserRole dtoUserRole)
         {
-            if (_context.UserRoles == null)
+            try
             {
-                return Problem("Entity set 'MainContext.UserRoles'  is null.");
-            }
-            _context.UserRoles.Add(userRole);
-            await _context.SaveChangesAsync();
+                if (_context.UserRoles == null)
+                {
+                    return Problem("Entity set 'MainContext.UserRoles' is null.");
+                }
 
-        
-            return Ok("Added role with id: " +userRole.RoleId+ " to user with id: " + userRole.UserId);
+                var userRole = new UserRole
+                {
+                    UserId = dtoUserRole.UserId,
+                    RoleId = dtoUserRole.RoleId,
+                };
+
+                _context.UserRoles.Add(userRole);
+                await _context.SaveChangesAsync();
+
+                Log.Information("UserController: add role => {@userRole}", userRole);
+
+                return Ok("Added role with id: " + userRole.RoleId + " to user with id: " + userRole.UserId);
+            }
+            catch (DbUpdateException ex)
+            {
+            
+                Log.Error(ex, "Error while adding role to user.");
+                return StatusCode(500, "An error occurred while adding the role to the user.");
+            }
         }
 
         // Put
@@ -289,42 +325,60 @@ namespace UserTask.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, DTOUser updatedUser)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-
-            var existingUser = await _context.Users.FindAsync(id);
-
-            if (existingUser == null)
-            {
-                return NotFound();
-            }
-
-            existingUser.Name = updatedUser.name;
-            existingUser.Age = updatedUser.age;
-            existingUser.Email = updatedUser.email;
-
-            _context.Entry(existingUser).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var existingUser = await _context.Users.FindAsync(id);
+
+                if (existingUser == null)
                 {
                     return NotFound();
                 }
-                else
+
+                if (await _context.Users.AnyAsync(u => u.Email == updatedUser.email && u.Id != id))
                 {
-                    throw;
+                    ModelState.AddModelError("email", "Email is already in use.");
+                    return BadRequest(ModelState);
                 }
+
+                existingUser.Name = updatedUser.name;
+                existingUser.Age = updatedUser.age;
+                existingUser.Email = updatedUser.email;
+
+                _context.Entry(existingUser).State = EntityState.Modified;
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!UserExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                Log.Information("UserController: update user info by id => {@existingUser}", existingUser);
+
+                return Ok(existingUser);
             }
-            return Ok(existingUser);
+            catch (DbUpdateException ex)
+            {
+                // Handle database update error
+                Log.Error(ex, "Error while updating user info.");
+                return StatusCode(500, "An error occurred while updating user info.");
+            }
         }
+
 
 
 
@@ -337,43 +391,66 @@ namespace UserTask.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            if (_context.Users == null)
+            try
             {
-                return NotFound();
+                if (_context.Users == null)
+                {
+                    return NotFound();
+                }
+
+                var user = await _context.Users.FindAsync(id);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+                Log.Information("UserController: delete user by id => {@user}", user);
+
+                return Ok("User with id: " + id + " was deleted!");
             }
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            catch (DbUpdateException ex)
             {
-                return NotFound();
+  
+                Log.Error(ex, "Error while deleting user.");
+                return StatusCode(500, "An error occurred while deleting the user.");
             }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return Ok("user with id: " +id + " was deleted!");
         }
+
 
         /// <summary>
         /// Delete record UserRoles by id (if need to remove role from user)
         /// </summary>
         [HttpDelete("UserRoles/{id}")]
-
         public async Task<IActionResult> DeleteUserRole(int id)
         {
-            if (_context.UserRoles == null)
+            try
             {
-                return NotFound();
+                if (_context.UserRoles == null)
+                {
+                    return NotFound();
+                }
+
+                var userRole = await _context.UserRoles.FindAsync(id);
+
+                if (userRole == null)
+                {
+                    return NotFound();
+                }
+
+                _context.UserRoles.Remove(userRole);
+                await _context.SaveChangesAsync();
+                Log.Information("UserController: delete role from user by id => {@userRole}", userRole);
+
+                return NoContent();
             }
-            var userRole = await _context.UserRoles.FindAsync(id);
-            if (userRole == null)
+            catch (DbUpdateException ex)
             {
-                return NotFound();
+                Log.Error(ex, "Error while deleting user role.");
+                return StatusCode(500, "An error occurred while deleting the user role.");
             }
-
-            _context.UserRoles.Remove(userRole);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
         private bool UserExists(int id)

@@ -4,6 +4,67 @@
         <name>UserTask</name>
     </assembly>
     <members>
+        <member name="T:UserTask.Context.MainContext">
+            <summary>
+            Represents the main database context for the UserTask application.
+            </summary>
+        </member>
+        <member name="M:UserTask.Context.MainContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions)">
+            <summary>
+            Initializes a new instance of the <see cref="T:UserTask.Context.MainContext"/> class.
+            </summary>
+            <param name="options">The database context options.</param>
+        </member>
+        <member name="P:UserTask.Context.MainContext.Users">
+            <summary>
+            Gets or sets the collection of User entities in the database.
+            </summary>
+        </member>
+        <member name="P:UserTask.Context.MainContext.UserRoles">
+            <summary>
+            Gets or sets the collection of UserRole entities in the database.
+            </summary>
+        </member>
+        <member name="P:UserTask.Context.MainContext.Roles">
+            <summary>
+            Gets or sets the collection of Role entities in the database.
+            </summary>
+        </member>
+        <member name="T:UserTask.ControllerModels.DTOUser">
+            <summary>
+            Represents a Data Transfer Object (DTO) for creating or updating a user, while avoiding issues with the related Role entity.
+            </summary>
+        </member>
+        <member name="P:UserTask.ControllerModels.DTOUser.name">
+            <summary>
+            Gets or sets the name of the user.
+            </summary>
+        </member>
+        <member name="P:UserTask.ControllerModels.DTOUser.age">
+            <summary>
+            Gets or sets the age of the user.
+            </summary>
+        </member>
+        <member name="P:UserTask.ControllerModels.DTOUser.email">
+            <summary>
+            Gets or sets the email address of the user.
+            </summary>
+        </member>
+        <member name="T:UserTask.ControllerModels.DTOUserRole">
+            <summary>
+            Data Transfer Object (DTO) for creating or updating a user role.
+            </summary>
+        </member>
+        <member name="P:UserTask.ControllerModels.DTOUserRole.UserId">
+            <summary>
+            Gets or sets the user's ID.
+            </summary>
+        </member>
+        <member name="P:UserTask.ControllerModels.DTOUserRole.RoleId">
+            <summary>
+            Gets or sets the role's ID.
+            </summary>
+        </member>
         <member name="T:UserTask.Controllers.UserController">
             <summary>
             Controller for user CRUD add give/remove them roles
@@ -23,25 +84,24 @@
         </member>
         <member name="M:UserTask.Controllers.UserController.GetRoles(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
             <summary>
-            Get list of roles using pagination
+            Get a list of roles with pagination support.
             </summary>
-            <param name="page"></param>
-            <param name="pageSize"></param>
-            <param name="sortField"></param>
-            <param name="sortOrder"></param>
-            <param name="filter"></param>
-            <returns></returns>
+            <param name="page">Page number (default is 1).</param>
+            <param name="pageSize">Number of items per page (default is 100).</param>
+            <param name="sortField">Field to sort by  (Id or Name).</param>
+            <param name="sortOrder">Sorting order (asc or desc).</param>
+            <param name="filter">Filter users by keyword.</param>
         </member>
-        <member name="M:UserTask.Controllers.UserController.GetUsers(System.Nullable{System.Int32},System.Nullable{System.Int32},System.String,System.String,System.String)">
+        <member name="M:UserTask.Controllers.UserController.GetUsers(System.Int32,System.Int32,System.String,System.String,System.String)">
             <summary>
-            Get list of users using pagination
+            Get a list of users with pagination support.
             </summary>
-            <param name="page"></param>
-            <param name="pageSize"></param>
-            <param name="sortField"></param>
-            <param name="sortOrder"></param>
-            <param name="filter"></param>
-            <returns></returns>
+            <param name="page">Page number (default is 1).</param>
+            <param name="pageSize">Number of items per page (default is 100).</param>
+            <param name="sortField">Field to sort by (e.g., "Id", "Name", "Age", "Email").</param>
+            <param name="sortOrder">Sorting order ("asc" or "desc").</param>
+            <param name="filter">Filter users by keyword.</param>
+            <returns>A list of users with pagination details.</returns>
         </member>
         <member name="M:UserTask.Controllers.UserController.GetUserWithRoles(System.Int32)">
             <summary>
@@ -52,16 +112,16 @@
         </member>
         <member name="M:UserTask.Controllers.UserController.PostUser(UserTask.ControllerModels.DTOUser)">
             <summary>
-            Create user 
+            Create a user 
             </summary>
             <param name="createUser"></param>
             <returns></returns>
         </member>
-        <member name="M:UserTask.Controllers.UserController.PostUserRole(UserTask.Models.UserRole)">
+        <member name="M:UserTask.Controllers.UserController.PostUserRole(UserTask.ControllerModels.DTOUserRole)">
             <summary>
             Give a role to user
             </summary>
-            <param name="userRole"></param>
+            <param name="dtoUserRole"></param>
             <returns></returns>
         </member>
         <member name="M:UserTask.Controllers.UserController.PutUser(System.Int32,UserTask.ControllerModels.DTOUser)">
@@ -108,6 +168,26 @@
         <member name="M:UserTask.Migrations.checkconstraints.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:UserTask.Models.Role">
+            <summary>
+            Represents a role entity.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.Role.Id">
+            <summary>
+            Gets or sets the unique identifier for the role.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.Role.Name">
+            <summary>
+            Gets or sets the name of the role.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.Role.UserRoles">
+            <summary>
+            Gets or sets the collection of user roles associated with the role.
+            </summary>
+        </member>
         <member name="T:UserTask.Models.User">
             <summary>
             Represents a user entity.
@@ -136,6 +216,36 @@
         <member name="P:UserTask.Models.User.UserRoles">
             <summary>
             Gets or sets the collection of user roles associated with the user.
+            </summary>
+        </member>
+        <member name="T:UserTask.Models.UserRole">
+            <summary>
+            Represents a user-role relationship entity.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.UserRole.Id">
+            <summary>
+            Gets or sets the unique identifier for the user-role relationship.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.UserRole.UserId">
+            <summary>
+            Gets or sets the ID of the user associated with this user-role relationship.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.UserRole.User">
+            <summary>
+            Gets or sets the user associated with this user-role relationship.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.UserRole.RoleId">
+            <summary>
+            Gets or sets the ID of the role associated with this user-role relationship.
+            </summary>
+        </member>
+        <member name="P:UserTask.Models.UserRole.Role">
+            <summary>
+            Gets or sets the role associated with this user-role relationship.
             </summary>
         </member>
     </members>

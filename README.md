@@ -1,1 +1,1 @@
-Task for WEB Technologies. (Bialitki Vladislav)
+Task for WEB Technologies. (Bialitski Vladislav)

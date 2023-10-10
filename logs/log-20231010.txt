@@ -530,3 +530,86 @@ VALUES (@p0, @p1);
 2023-10-10 21:38:45.871 +03:00 [INF] Executed endpoint 'UserTask.Controllers.UserController.PostUser (UserTask)'
 2023-10-10 21:38:45.875 +03:00 [INF] HTTP POST /api/User responded 200 in 2313.0496 ms
 2023-10-10 21:38:45.887 +03:00 [INF] Request finished HTTP/2 POST https://localhost:7161/api/User application/json 77 - 200 - application/json;+charset=utf-8 2331.4854ms
+2023-10-10 21:42:48.393 +03:00 [INF] Now listening on: https://localhost:7161
+2023-10-10 21:42:48.458 +03:00 [INF] Now listening on: http://localhost:5029
+2023-10-10 21:42:48.465 +03:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-10-10 21:42:48.466 +03:00 [INF] Hosting environment: Development
+2023-10-10 21:42:48.467 +03:00 [INF] Content root path: D:\Projects\.NET\Interview\UserTask\
+2023-10-10 21:42:48.779 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7161/swagger/index.html - -
+2023-10-10 21:42:49.265 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7161/swagger/index.html - - - 200 - text/html;charset=utf-8 490.2513ms
+2023-10-10 21:42:49.349 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7161/_framework/aspnetcore-browser-refresh.js - -
+2023-10-10 21:42:49.349 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7161/_vs/browserLink - -
+2023-10-10 21:42:49.356 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7161/_framework/aspnetcore-browser-refresh.js - - - 200 12348 application/javascript;+charset=utf-8 7.0890ms
+2023-10-10 21:42:49.390 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7161/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 40.9650ms
+2023-10-10 21:42:49.667 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - -
+2023-10-10 21:42:49.906 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 238.7408ms
+2023-10-10 21:43:02.505 +03:00 [INF] Request starting HTTP/2 DELETE https://localhost:7161/api/User/UserRoles/53 - -
+2023-10-10 21:43:02.542 +03:00 [INF] Executing endpoint 'UserTask.Controllers.UserController.DeleteUserRole (UserTask)'
+2023-10-10 21:43:02.581 +03:00 [INF] Route matched with {action = "DeleteUserRole", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeleteUserRole(Int32) on controller UserTask.Controllers.UserController (UserTask).
+2023-10-10 21:43:04.481 +03:00 [INF] Executed DbCommand (55ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[RoleId], [u].[UserId]
+FROM [UserRoles] AS [u]
+WHERE [u].[Id] = @__p_0
+2023-10-10 21:43:04.680 +03:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+DELETE FROM [UserRoles]
+OUTPUT 1
+WHERE [Id] = @p0;
+2023-10-10 21:43:04.706 +03:00 [INF] UserController: delete role from user by id => {"Id":53,"UserId":46,"User":null,"RoleId":3,"Role":null,"$type":"UserRole"}
+2023-10-10 21:43:04.735 +03:00 [INF] Executing StatusCodeResult, setting HTTP status code 204
+2023-10-10 21:43:04.746 +03:00 [INF] Executed action UserTask.Controllers.UserController.DeleteUserRole (UserTask) in 2151.5484ms
+2023-10-10 21:43:04.750 +03:00 [INF] Executed endpoint 'UserTask.Controllers.UserController.DeleteUserRole (UserTask)'
+2023-10-10 21:43:04.755 +03:00 [INF] HTTP DELETE /api/User/UserRoles/53 responded 204 in 2215.3640 ms
+2023-10-10 21:43:04.770 +03:00 [INF] Request finished HTTP/2 DELETE https://localhost:7161/api/User/UserRoles/53 - - - 204 - - 2265.5278ms
+2023-10-10 21:43:08.367 +03:00 [INF] Request starting HTTP/2 DELETE https://localhost:7161/api/User/UserRoles/53 - -
+2023-10-10 21:43:08.371 +03:00 [INF] Executing endpoint 'UserTask.Controllers.UserController.DeleteUserRole (UserTask)'
+2023-10-10 21:43:08.373 +03:00 [INF] Route matched with {action = "DeleteUserRole", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeleteUserRole(Int32) on controller UserTask.Controllers.UserController (UserTask).
+2023-10-10 21:43:08.443 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[RoleId], [u].[UserId]
+FROM [UserRoles] AS [u]
+WHERE [u].[Id] = @__p_0
+2023-10-10 21:43:08.456 +03:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+2023-10-10 21:43:08.473 +03:00 [INF] Executed action UserTask.Controllers.UserController.DeleteUserRole (UserTask) in 95.8999ms
+2023-10-10 21:43:08.476 +03:00 [INF] Executed endpoint 'UserTask.Controllers.UserController.DeleteUserRole (UserTask)'
+2023-10-10 21:43:08.479 +03:00 [INF] HTTP DELETE /api/User/UserRoles/53 responded 404 in 107.6406 ms
+2023-10-10 21:43:08.481 +03:00 [INF] Request finished HTTP/2 DELETE https://localhost:7161/api/User/UserRoles/53 - - - 404 - application/problem+json;+charset=utf-8 113.7612ms
+2023-10-10 21:43:18.033 +03:00 [INF] Request starting HTTP/2 DELETE https://localhost:7161/api/User/21 - -
+2023-10-10 21:43:18.035 +03:00 [INF] Executing endpoint 'UserTask.Controllers.UserController.DeleteUser (UserTask)'
+2023-10-10 21:43:18.042 +03:00 [INF] Route matched with {action = "DeleteUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeleteUser(Int32) on controller UserTask.Controllers.UserController (UserTask).
+2023-10-10 21:43:18.076 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Age], [u].[Email], [u].[Name]
+FROM [Users] AS [u]
+WHERE [u].[Id] = @__p_0
+2023-10-10 21:43:18.117 +03:00 [INF] Executed DbCommand (1ms) [Parameters=[@p0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+DELETE FROM [Users]
+OUTPUT 1
+WHERE [Id] = @p0;
+2023-10-10 21:43:18.120 +03:00 [INF] UserController: delete user by id => {"Id":21,"Name":"wnamepostman","Age":9999,"Email":"aaa@mail.compostman","UserRoles":null,"$type":"User"}
+2023-10-10 21:43:18.126 +03:00 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2023-10-10 21:43:18.127 +03:00 [INF] Executed action UserTask.Controllers.UserController.DeleteUser (UserTask) in 81.8266ms
+2023-10-10 21:43:18.130 +03:00 [INF] Executed endpoint 'UserTask.Controllers.UserController.DeleteUser (UserTask)'
+2023-10-10 21:43:18.132 +03:00 [INF] HTTP DELETE /api/User/21 responded 200 in 97.0674 ms
+2023-10-10 21:43:18.134 +03:00 [INF] Request finished HTTP/2 DELETE https://localhost:7161/api/User/21 - - - 200 - text/plain;+charset=utf-8 101.5513ms
+2023-10-10 21:43:22.328 +03:00 [INF] Request starting HTTP/2 DELETE https://localhost:7161/api/User/21 - -
+2023-10-10 21:43:22.329 +03:00 [INF] Executing endpoint 'UserTask.Controllers.UserController.DeleteUser (UserTask)'
+2023-10-10 21:43:22.334 +03:00 [INF] Route matched with {action = "DeleteUser", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] DeleteUser(Int32) on controller UserTask.Controllers.UserController (UserTask).
+2023-10-10 21:43:22.343 +03:00 [INF] Executed DbCommand (2ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [u].[Id], [u].[Age], [u].[Email], [u].[Name]
+FROM [Users] AS [u]
+WHERE [u].[Id] = @__p_0
+2023-10-10 21:43:22.349 +03:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+2023-10-10 21:43:22.354 +03:00 [INF] Executed action UserTask.Controllers.UserController.DeleteUser (UserTask) in 15.4838ms
+2023-10-10 21:43:22.356 +03:00 [INF] Executed endpoint 'UserTask.Controllers.UserController.DeleteUser (UserTask)'
+2023-10-10 21:43:22.359 +03:00 [INF] HTTP DELETE /api/User/21 responded 404 in 29.2658 ms
+2023-10-10 21:43:22.361 +03:00 [INF] Request finished HTTP/2 DELETE https://localhost:7161/api/User/21 - - - 404 - application/problem+json;+charset=utf-8 33.4304ms
+2023-10-10 21:51:21.209 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7161/swagger/index.html - -
+2023-10-10 21:51:21.225 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7161/swagger/index.html - - - 200 - text/html;charset=utf-8 16.0682ms
+2023-10-10 21:51:21.305 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7161/_framework/aspnetcore-browser-refresh.js - -
+2023-10-10 21:51:21.307 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7161/_vs/browserLink - -
+2023-10-10 21:51:21.307 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7161/_framework/aspnetcore-browser-refresh.js - - - 200 12348 application/javascript;+charset=utf-8 2.8965ms
+2023-10-10 21:51:21.343 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7161/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 36.2247ms
+2023-10-10 21:51:21.551 +03:00 [INF] Request starting HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - -
+2023-10-10 21:51:21.612 +03:00 [INF] Request finished HTTP/2 GET https://localhost:7161/swagger/v1/swagger.json - - - 200 - application/json;charset=utf-8 60.5290ms

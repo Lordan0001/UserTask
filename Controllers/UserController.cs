@@ -18,7 +18,7 @@ namespace UserTask.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class UserController : ControllerBase
     {
         private readonly MainContext _context;
@@ -273,7 +273,6 @@ namespace UserTask.Controllers
             }
             catch (DbUpdateException ex)
             {
-                // Handle database update error
                 Log.Error(ex, "Error while creating user.");
                 return StatusCode(500, "An error occurred while creating the user.");
             }
@@ -309,7 +308,7 @@ namespace UserTask.Controllers
             }
             catch (DbUpdateException ex)
             {
-            
+
                 Log.Error(ex, "Error while adding role to user.");
                 return StatusCode(500, "An error occurred while adding the role to the user.");
             }
@@ -373,13 +372,10 @@ namespace UserTask.Controllers
             }
             catch (DbUpdateException ex)
             {
-                // Handle database update error
                 Log.Error(ex, "Error while updating user info.");
                 return StatusCode(500, "An error occurred while updating user info.");
             }
         }
-
-
 
 
         // Delete
@@ -413,7 +409,7 @@ namespace UserTask.Controllers
             }
             catch (DbUpdateException ex)
             {
-  
+
                 Log.Error(ex, "Error while deleting user.");
                 return StatusCode(500, "An error occurred while deleting the user.");
             }
